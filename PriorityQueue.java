@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Jonah Goldberg / Section 002
  *
  *   Note, additional comments provided throughout this source code
  *   is for educational purposes
@@ -152,7 +152,16 @@ class PriorityQueue<E, P> {
     public Node add(E e, P priority) {
 
         // YOUR CODE GOES HERE
-        return null;
+        //Initialize the new node that has to be inserted into the qeue 
+        PriorityQueue<E, P>.Node newNode = new PriorityQueue.Node(e, priority, this.tree.size());
+
+        //Add the new node to the tree
+        this.tree.add(newNode);
+
+        //Pull up this node from the end
+        pullUp(this.tree.size() - 1);
+
+        return newNode;
     }
 
 
@@ -169,6 +178,16 @@ class PriorityQueue<E, P> {
     public boolean contains(E e) {
 
         // ADD YOUR CODE HERE
+        //Iterate through nodes in the prio queue
+        for(PriorityQueue<E, P>.Node node : this.tree) {
+            //Check if the current nodes value equals the target param
+            if(node.value.equals(e)) {
+                //Return true if it does
+                return true;
+            }
+        }
+
+        //Iterated through all nodes and didn't find target from params so return false 
         return false;
     }
 

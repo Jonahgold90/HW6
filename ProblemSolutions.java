@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Jonah Goldberg / Section 002
  *
  *   This java file contains the problem solutions for the methods lastBoulder,
  *   showDuplicates, and pair methods. You should utilize the Java Collection
@@ -68,7 +68,38 @@ public class ProblemSolutions {
       //
       // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME / SECTION # ABOVE
       //
-      return -1;
+
+        //Initialize a max heap
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+
+        //Add all the numbers from boulders to the maxHeap
+        for(int num : boulders) {
+            maxHeap.add(num);
+        }
+
+        //Loop until size of maxHeap is 0 or 1 boulders
+        while(maxHeap.size() > 1) {
+            //Choose the heaviest two boulders
+            int heaviest = maxHeap.poll();
+            int secondHeaviest = maxHeap.poll();
+
+            //If the boulders are the same weight then keep them destoryed 
+            if(heaviest == secondHeaviest) {
+                continue;
+            } else {
+                //New boulder is heaviest (X) - secondHeaviest (y)
+                int newBoulder = heaviest - secondHeaviest;
+                //Add the new boulder back to the max heap
+                maxHeap.add(newBoulder);
+            }
+        }
+        //Return the weight of the last remaining boulder
+        if(maxHeap.size() == 1) {
+            return maxHeap.peek();
+        } else {
+            //Return 0 if no boulders are left
+            return 0;
+        }
   }
 
 
@@ -93,8 +124,31 @@ public class ProblemSolutions {
 
         //
         //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure result is sorted in ascending order
+
+        //Set to hold non-duplicates
+        HashSet<String> seen = new HashSet<String>();
+        //Set to hold duplicates
+        HashSet<String> dupeSet = new HashSet<String>();
+
+        //Iterate through input array list
+        for(int i = 0; i < input.size(); i++) {
+            //If our set already contains the string then we found a duplicate
+            if(seen.contains(input.get(i))) {
+                //Duplicate found so add it to the output list
+                dupeSet.add(input.get(i));
+            } else {
+                //If its not in the set then add it 
+                seen.add(input.get(i));
+            }
+        }
+
+        //Create an array list with all the items in dupeSet
+        ArrayList<String> outputList = new ArrayList<>(dupeSet);
+        //Sort the list
+        Collections.sort(outputList);
+
+        //Return the sorted list
+        return outputList;  // Make sure result is sorted in ascending order
 
     }
 
@@ -134,6 +188,34 @@ public class ProblemSolutions {
         //
         //  YOUR CODE GOES HERE
         //
-        return new ArrayList<>();  // Make sure returned lists is sorted as indicated above
+        HashSet<Integer> set = new HashSet<>();
+        ArrayList<String> res = new ArrayList<>();
+        HashSet<String> uniquePairs = new HashSet<>();
+
+
+        for(int num : input){
+            //Complement = k - num
+            int complement = k - num;
+            //Check if the set contains the complement
+            if(set.contains(complement)) {
+                //Then we have found a pair which adds to k
+                //Add the pair in sorted order (minimum, maximum)
+                String pair = ("(" + Math.min(num, complement) + ", " + Math.max(num, complement) + ")");
+
+                //Only add the pair if it doesn't already exist
+                if(!uniquePairs.contains(pair)) {
+                    //Then add the pair to the unique pairs set
+                    uniquePairs.add(pair);
+                    //Also add the pair to the res set
+                    res.add(pair);
+                }
+            } 
+            //Add the num to the set
+            set.add(num);
+            
+        }
+        //Sort the array list
+        Collections.sort(res);
+        return res;  // Make sure returned lists is sorted as indicated above
     }
 }
